@@ -10,10 +10,10 @@
 // LiquidCrystal (RS, E, D4,D5,D6,D7)
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 
-byte u=0;//unitati s.
-byte z=0;//zeci s.
-byte s=0;//sute s.
-byte m=0;//mii s.
+byte u=0;// seconds s
+byte z=0;// sX10
+byte s=0;// sX100
+byte m=0;// sX1000
 int counter=0;
 int n=0;
 
