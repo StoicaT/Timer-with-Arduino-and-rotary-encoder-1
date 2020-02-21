@@ -16,15 +16,18 @@ byte s=0;// sX100
 byte m=0;// sX1000
 int counter=0;
 int n=0;
+#define btMem A3 //Button "Memory" to ground
+#define oRel 9 // OUT relay
+#define oBuz 10 // OUT buzzer
 
 void setup() {
    lcd.begin(16, 2);
-   pinMode(A3, INPUT_PULLUP);//Button "Memory" to ground
+   pinMode(btMem, INPUT_PULLUP);
    pinMode(A2, INPUT_PULLUP);//"SW-Left" to ground
    pinMode(A1, INPUT_PULLUP);//Rot enc "B" to ground
    pinMode(A0, INPUT_PULLUP);//Rot enc "A" to ground
-   pinMode(9, OUTPUT);// OUT relay
-   pinMode(10, OUTPUT);// OUT buzzer
+   pinMode(oRel, OUTPUT);
+   pinMode(oBuz, OUTPUT);
 Serial.begin (9600);
   
 //Welcome message
@@ -101,7 +104,7 @@ delay(50);
 
 while(millis() % 1000 != 0);//sincro with time base
 
-  digitalWrite(9,HIGH);//Start timer
+  digitalWrite(oRel,HIGH);//Start timer
   
   do{// decrease time
   //display current "n"
@@ -120,13 +123,13 @@ while(millis() % 1000 != 0);//sincro with time base
   lcd.setCursor(8,1);
   lcd.print(n);
   
-  digitalWrite(9,LOW);//Stop timer
+  digitalWrite(oRel,LOW);//Stop timer
   
-digitalWrite(10,HIGH);// start beep to end
+digitalWrite(oBuz,HIGH);// start beep to end
 delay(1000);
-digitalWrite(10,LOW);   //  stop beep to end
+digitalWrite(oBuz,LOW);   //  stop beep to end
 
-  }while(digitalRead(A3)==HIGH);//"Memory" button
+  }while(digitalRead(btMem)==HIGH);//"Memory" button
   u=0;
   z=0;
   s=0;
