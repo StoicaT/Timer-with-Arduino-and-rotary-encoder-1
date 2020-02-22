@@ -19,16 +19,17 @@ int n=0;
 #define btMem A3 //Button "Memory" to ground
 #define oRel 9 // OUT relay
 #define oBuz 10 // OUT buzzer
-
+#define pUsh A2 // Push rot. enc. to ground
+#define rEnb A1 //Rot enc "B" to ground
+#define rEna A0 //Rot enc "A" to ground
 void setup() {
    lcd.begin(16, 2);
    pinMode(btMem, INPUT_PULLUP);
-   pinMode(A2, INPUT_PULLUP);//"SW-Left" to ground
-   pinMode(A1, INPUT_PULLUP);//Rot enc "B" to ground
-   pinMode(A0, INPUT_PULLUP);//Rot enc "A" to ground
+   pinMode(pUsh, INPUT_PULLUP);
+   pinMode(rEnb, INPUT_PULLUP);
+   pinMode(rEna, INPUT_PULLUP);
    pinMode(oRel, OUTPUT);
    pinMode(oBuz, OUTPUT);
-Serial.begin (9600);
   
 //Welcome message
    lcd.clear();
@@ -47,7 +48,7 @@ void loop() {
   do{
   u= roTen();
   lcdpr();
-  }while(digitalRead(A2)==HIGH);
+  }while(digitalRead(pUsh)==HIGH);//"Push" button
   delay(10);
   counter=0;
   
@@ -58,7 +59,7 @@ void loop() {
     do{  
   z= roTen();
   lcdpr();
-  }while(digitalRead(A2)==HIGH);//"Left" button
+  }while(digitalRead(pUsh)==HIGH);//"Push" button
     delay(10);
    counter=0; 
    
@@ -69,7 +70,7 @@ void loop() {
   do{  
   s= roTen();
   lcdpr(); 
-  }while(digitalRead(A2)==HIGH);//"Left" button
+  }while(digitalRead(pUsh)==HIGH);//"Push" button
     delay(10);
     counter=0; 
     
@@ -80,7 +81,7 @@ void loop() {
     do{  
   m= roTen();
   lcdpr();
-  }while(digitalRead(A2)==HIGH);//"Left" button
+  }while(digitalRead(pUsh)==HIGH);//"Push" button
  delay(10);
  counter=0; 
   
@@ -98,8 +99,8 @@ void loop() {
   lcd.setCursor(8,1);
   lcd.print(n);
    
-while(0==digitalRead(A2));//"Start" button
-while(1==digitalRead(A2));
+while(0==digitalRead(pUsh));//"Push" button to start
+while(1==digitalRead(pUsh));
 delay(50);
 
 while(millis() % 1000 != 0);//sincro with time base
@@ -139,23 +140,23 @@ digitalWrite(oBuz,LOW);   //  stop beep to end
 
      
 byte roTen(){ //  Rotary encoder routine
- while(digitalRead(A2) &digitalRead(A1) & digitalRead(A0)==1);
-  if(digitalRead(A2)==0){
+ while(digitalRead(pUsh) &digitalRead(rEnb) & digitalRead(rEna)==1);
+  if(digitalRead(pUsh)==0){
   return counter;
   }
-   switch(digitalRead(A0)) {
+   switch(digitalRead(rEna)) {
     case HIGH:
-    while(digitalRead(A0)==0);
-    while(digitalRead(A1)==0);
+    while(digitalRead(rEna)==0);
+    while(digitalRead(rEnb)==0);
     counter ++;
     counter=counter%10;
     break;
     case LOW:
-   while(digitalRead(A1)==0);
-   while(digitalRead(A0)==0);
+   while(digitalRead(rEnb)==0);
+   while(digitalRead(rEna)==0);
    counter --;
-    if(counter==-1){//left begin with 9
-    counter=9;
+    if(counter==-1){
+    counter=9;//left begin with 9
     } 
     counter=abs(counter)%10;
   break; 
